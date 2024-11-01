@@ -158,6 +158,11 @@ def main(args):
     # define the model
     model = models_mae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
 
+    if args.resume:
+        checkpoint = torch.load(args.resume, map_location='cpu')
+        model.load_state_dict(checkpoint['model'])
+        print("Loaded model from %s" % args.resume)
+
     model.to(device)
 
     model_without_ddp = model
